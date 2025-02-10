@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+*.egg-info/
+dist/
+build/
+
+# Virtual Environment
+.env
+.venv/
+venv/
+.myvenv/
+myvenv/
+ENV/
+
+# IDE
+.idea/
+.vscode/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Project specific
+data/vectors/
+*.log
+.cache
+.pytest_cache/
+
+# Coverage files
+.coverage
+htmlcov/
+coverage.xml
+
+# chroma
+chroma.sqlite3

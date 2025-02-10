@@ -3,6 +3,10 @@ streamlit==1.40.0
 docx2txt 
 jq
 pypdf
+wordcloud
+nltk
+pandas
+numpy
 langchain==0.3.14
 langchain-core==0.3.29
 langchain-ollama==0.2.2
@@ -14,3 +18,5 @@ onnx>=1.17.0
 protobuf==5.29.2
 chromadb>=0.4.22
 pydantic==2.10.4
+folium
+streamlit-folium
