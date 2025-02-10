@@ -1,5 +1,7 @@
 ollama==0.4.4
 streamlit==1.40.0
+streamlit-folium
+folium
 docx2txt 
 jq
 pypdf
@@ -18,5 +20,3 @@ onnx>=1.17.0
 protobuf==5.29.2
 chromadb>=0.4.22
 pydantic==2.10.4
-folium
-streamlit-folium

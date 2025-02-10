@@ -22,7 +22,7 @@ ENV/
 .ipynb_checkpoints
 
 # Project specific
-data/vectors/
+data/vector_store/
 *.log
 .cache
 .pytest_cache/
@@ -31,6 +31,3 @@ data/vectors/
 .coverage
 htmlcov/
 coverage.xml
-
-# chroma
-chroma.sqlite3

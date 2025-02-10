@@ -1,55 +1,21 @@
 # ChatDocument
+<img src="./assets/ui.png" alt="Streamlit Web App" width="100%">
 
-System requirements:
 
-- Python 3.8 or higher
-- [Ollama](https://ollama.ai/) for local LLM inference
-- `jq` for JSON processing (can be installed via package manager)
+Local RAG (Retrieval Augmented Generation) application that allows you to chat with your documents such as any document such as `.txt`, `.pdf`, `.md`,  `.docx`, `.doc`, `.json` (including `.geojson`) using Ollama LLMs and LangChain via a Streamlit Web UI for Q&A interaction.
 
-## Installation
+## 📚 RAG System Architecture
+ <img src="./assets/rag.png" alt="Streamlit Web App" width="100%">
 
-1. Clone the repository:
 
-```bash
-git clone <repository-url>
-cd local-rag-chatbot
-```
-
-2. Create a virtual environment (optional but recommended):
-
-```bash
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-```
-
-3. Install the required Python packages:
-
-```bash
-pip install langchain langchain-core langchain-community langchain-ollama streamlit python-docx chromadb docx2txt pypdf
-```
-
-4. Install system dependencies:
-
-   - **Ollama**:
-     - Visit [https://ollama.ai/](https://ollama.ai/)
-     - Follow the installation instructions for your operating system
-   - **jq** (for JSON processing):
-     - Linux: `sudo apt-get install jq`
-     - macOS: `brew install jq`
-     - Windows: Download from [stedolan.github.io/jq](https://stedolan.github.io/jq/)
-
-5. Pull the Llama2 model:
-
-```bash
-ollama pull llama2
-```
-
-## Project Structure
+## 📂 Project Structure
 
 ```
 .
 ├── .streamlit/
-│   └── config.toml        # Streamlit configuration
+│   └── config.toml       # Streamlit configuration (OPTIONAL)
+├── assets/ 
+│   └── ui.png            # Streamlit UI image
 ├── components/
 │   ├── __init__.py
 │   ├── chat.py           # Chat interface implementation
@@ -57,43 +23,101 @@ ollama pull llama2
 ├── core/
 │   ├── __init__.py
 │   ├── embeddings.py     # Vector embeddings configuration
-│   └── llm.py           # Language model setup
+│   └── llm.py            # Language model setup
 ├── data/
-│   └── vector_store/     # Chroma vector store data
+│   ├── vector_store/     # ChromaDB vector store for embeddings
+│   └── sample_docs/      # Sample documents for testing
 ├── utils/
 │   ├── __init__.py
 │   └── helpers.py        # Utility functions
-└── main.py              # Application entry point
+└── main.py               # Application entry point
 ```
 
-## Configuration
+## 🚀 Getting Started
 
-1. Create `.streamlit/config.toml` with:
+### 1. **Install Ollama**
 
-```toml
-[server]
-headless = true
-address = "0.0.0.0"
-port = 5000
+   - Visit [Ollama's website](https://ollama.com) to download library and install
+   - Open `cmd` or `terminal` to pull required models:
+     ```bash
+     ollama pull llama3.2  # or your preferred model
+     ollama pull nomic-embed-text
+     ```
 
-[theme]
-primaryColor = "#FF4B4B"
-backgroundColor = "#FFFFFF"
-secondaryBackgroundColor = "#F0F2F6"
-textColor = "#262730"
-```
+   - Pull (or run) deepseek model:
+     ```bash
+     ollama run deepseek-r1:8b
+     ```
 
-## Usage
+  - Pull mistral-large-latest model:
+    ```bash
+    ollama run mistral:7b
+    ```
 
-1. Ensure Ollama is running in the background:
+### 2. **Clone Repository**
+- Open `cmd` or `terminal` to clone repository and run the following commands:
 
-```bash
-# Check if Ollama is running
-curl http://localhost:11434/api/tags
-```
+   ```bash
+   https://github.com/aghoshpro/ChatDocumentRAG.git
+   ```
+ - Create a working directory and navigate to it:
+    ```bash
+    cd ChatDocumentRAG
+    ```
 
-2. Start the application:
+### 3. **Set Up Local Environment**
+
+- Create a virtual environment `myvenv` and activate it:
+   ```bash
+   python -m venv myvenv
+   ```
+
+   ```bash
+   .\myvenv\Scripts\activate    # On Windows
+
+   # ---------------------- OR ---------------------- #
+
+  source myvenv/bin/activate  # On Linux or Mac
+   ```
+- Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+## 🎮 Run Streamlit Web App
 
 ```bash
 streamlit run main.py
 ```
+- Content View 
+<img src="./assets/ui.png" alt="Streamlit Web App" width="100%">
+
+- WordCloud View:
+<img src="./assets/ui2.png" alt="Streamlit Web App" width="100%">
+
+
+## ✨Theme Configuration
+
+
+- Create `.streamlit/config.toml` with:
+
+  ```toml
+  [theme]
+  primaryColor = "#FF4B4B"
+  backgroundColor = "#FFFFFF"
+  secondaryBackgroundColor = "#F0F2F6"
+  textColor = "#262730"
+  font = "sans serif"
+  ```
+## 📑 References
+
+- [LangChain](https://python.langchain.com/docs/index.html)
+- [Ollama](https://ollama.com/docs/index.html)
+- [ChromaDB](https://www.trychroma.com/)
+- [Streamlit](https://docs.streamlit.io/)
+- [Folium](https://python-visualization.github.io/folium/)
+- [Unstructured](https://docs.unstructured.io/platform/supported-file-types)
+- [Enhancing Retrieval Augmented Generation with ChromaDB and SQLite](https://medium.com/@dassandipan9080/enhancing-retrieval-augmented-generation-with-chromadb-and-sqlite-c499109f8082)
+- [Implementing RAG in LangChain with Chroma](https://medium.com/@callumjmac/implementing-rag-in-langchain-with-chroma-a-step-by-step-guide-16fc21815339)
+
+- [Build Your Own RAG and Run Them Locally](https://blog.duy.dev/build-your-own-rag-and-run-them-locally/)
