@@ -170,7 +170,12 @@ def handle_file_upload() -> Optional[list]:
                         loader = UnstructuredWordDocumentLoader(file_path)
                 elif file_extension in ['.json']:
                     with open(file_path, 'r') as f:
-                        json_content = extract_json_content(json.load(f))
+                        df = pd.read_json(f)
+                        json_content = df.to_string()
+                        # json_content = extract_json_content(json.load(f))
+                        if 'dataframe' not in st.session_state:
+                            st.session_state.dataframe = {}
+                        st.session_state.dataframe[file_path] = df
                     documents = [Document(page_content=json_content, metadata={"source": file_path})]
                     return documents
                 elif file_extension in ['.geojson']:

@@ -52,7 +52,7 @@ def display_chat_interface(documents: Optional[list[Document]] = None):
                 # Generate wordcloud
                 stop_words = set(stopwords.words('english'))
                 wordcloud = WordCloud(width=800,
-                                      height=400,
+                                      height=600,
                                       background_color='white',
                                       stopwords=stop_words).generate(text)
 
@@ -95,7 +95,7 @@ def display_chat_interface(documents: Optional[list[Document]] = None):
                                     'fillColor': '#ffaf00',
                                     'color': '#000000',
                                     'weight': 1,
-                                    'fillOpacity': 0.7
+                                    'fillOpacity': 0.6
                                 },
                                 tooltip=folium.GeoJsonTooltip(
                                     fields=non_geometry_cols[:5],  # Show first 5 properties on hover
@@ -105,7 +105,7 @@ def display_chat_interface(documents: Optional[list[Document]] = None):
                             ).add_to(m)
 
                             # Display the map using streamlit-folium
-                            folium_static(m, width=900, height=600)
+                            folium_static(m, width=550, height=500)
                         else:
                             # world_map = folium.Map(location=[0, 0], zoom_start=2, tiles="OpenStreetMap")
                             # folium_static(world_map, width=900, height=600)
@@ -120,7 +120,7 @@ def display_chat_interface(documents: Optional[list[Document]] = None):
         chat_container = st.container()
         
         # Input field at the bottom
-        prompt = st.chat_input("What would you like to know about the document?")
+        prompt = st.chat_input("Hi, Astro, what do you want to know about the document?")
         
         # Display chat history in the container
         with chat_container:
