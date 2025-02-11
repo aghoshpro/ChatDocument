@@ -44,7 +44,7 @@ def main():
         
         if documents:
             st.session_state['documents'] = documents
-            st.success(f"Document processed: {len(documents)} chunks created")
+            # st.success(f"Document processed: {len(documents)} chunks created")
         elif 'documents' in st.session_state:
             documents = st.session_state['documents']
     
