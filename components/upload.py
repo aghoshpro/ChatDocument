@@ -88,13 +88,24 @@ def delete_vector_store():
     """Delete the vector store directory and clear related session state"""
     import shutil
     vector_store_path = "data/vector_store"
+    
+    # Debug: Check if the path exists
     if os.path.exists(vector_store_path):
-        shutil.rmtree(vector_store_path)
-        # Clear all related session state
-        for key in ['documents', 'messages']:
-            if key in st.session_state:
-                del st.session_state[key]
-        st.success("Vector store and chat history deleted successfully!")
+        try:
+            shutil.rmtree(vector_store_path)
+            logger.info(f"Deleted vector store at {vector_store_path}")
+        except Exception as e:
+            logger.error(f"Failed to delete vector store: {str(e)}")
+            st.error(f"Failed to delete vector store: {str(e)}")
+            return
+
+    # Clear all related session state
+    for key in ['documents', 'messages']:
+        if key in st.session_state:
+            del st.session_state[key]
+            logger.info(f"Cleared session state for key: {key}")
+
+    st.success("Vector store and chat history deleted successfully!")
 
 def handle_file_upload() -> Optional[list]:
     """Handle document upload and processing with advanced chunking"""
@@ -182,9 +193,9 @@ def handle_file_upload() -> Optional[list]:
                     with open(file_path, 'r') as f:
                         try:
                             geojson_str = uploaded_file.getvalue().decode('utf-8')
-                            # Save geojson_str to session state to be used in another file
                             json_content = extract_json_content(json.loads(geojson_str))
                             documents = [Document(page_content=json_content, metadata={"source": file_path})]
+                            # Save geojson_str to session state to be used in another file
                             st.session_state.geojson_str = geojson_str
                             gdf = gpd.read_file(StringIO(geojson_str))
                             if 'dataframe' not in st.session_state:
