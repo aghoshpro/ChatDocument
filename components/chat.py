@@ -3,13 +3,19 @@ from typing import Optional
 from langchain_core.documents import Document
 from core.llm import get_llm_chain
 from core.embeddings import get_vector_store
-
+import nltk
+from nltk.corpus import stopwords
+from wordcloud import WordCloud
+import matplotlib.pyplot as plt
+import folium
+from streamlit_folium import folium_static
+import geopandas as gpd
+from io import StringIO
 
 def initialize_chat_session():
     """Initialize chat session state"""
     if "messages" not in st.session_state:
         st.session_state.messages = []
-
 
 def display_chat_interface(documents: Optional[list[Document]] = None):
     """Display chat interface and handle interactions"""
@@ -34,11 +40,6 @@ def display_chat_interface(documents: Optional[list[Document]] = None):
 
             # Word Cloud Tab
             with tabs[1]:
-                import nltk
-                from nltk.corpus import stopwords
-                from wordcloud import WordCloud
-                import matplotlib.pyplot as plt
-
                 # Download stopwords if not already downloaded
                 try:
                     nltk.data.find('corpora/stopwords')
@@ -75,16 +76,40 @@ def display_chat_interface(documents: Optional[list[Document]] = None):
 
             # Map View Tab
             with tabs[3]:
-                for doc in documents:
-                    if 'dataframe' in doc.metadata:
-                        df = doc.metadata['dataframe']
-                        if 'latitude' in df.columns and 'longitude' in df.columns:
-                            st.map(df)
+                        if 'geojson_str' in st.session_state:
+                            geojson_str = st.session_state.geojson_str
+                            # Now you can use geojson_str as needed
+                            gdf = gpd.read_file(StringIO(geojson_str))
+                            non_geometry_cols = [col for col in gdf.columns if col != 'geometry']
+                            # Compute bounding box
+                            bounds = gdf.total_bounds
+                            minx, miny, maxx, maxy = bounds
+                            # Generate Folium map
+                            m = folium.Map(location=[(miny + maxy) / 2, (minx + maxx) / 2], zoom_start=9)
+                            m.fit_bounds([[miny, minx], [maxy, maxx]])  # Set map bounds to match GeoDataFrame
+                            folium.GeoJson(gdf).add_to(m)  # Ensure GeoJSON is in WGS 84
+                            # Add GeoJSON to map with hover functionality
+                            folium.GeoJson(
+                                data=gdf.to_json(),
+                                style_function=lambda x: {
+                                    'fillColor': '#ffaf00',
+                                    'color': '#000000',
+                                    'weight': 1,
+                                    'fillOpacity': 0.7
+                                },
+                                tooltip=folium.GeoJsonTooltip(
+                                    fields=non_geometry_cols[:5],  # Show first 5 properties on hover
+                                    aliases=non_geometry_cols[:5],
+                                    style=("background-color: white; color: #333333; font-family: arial; font-size: 12px; padding: 10px;")
+                                )
+                            ).add_to(m)
+
+                            # Display the map using streamlit-folium
+                            folium_static(m, width=900, height=600)
                         else:
+                            # world_map = folium.Map(location=[0, 0], zoom_start=2, tiles="OpenStreetMap")
+                            # folium_static(world_map, width=900, height=600)
                             st.info("No geographic data found in the document")
-                    else:
-                        st.info(
-                            "No geographic data available for this document")
         else:
             st.info("Upload a document to see its content here")
 

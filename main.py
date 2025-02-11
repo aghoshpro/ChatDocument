@@ -1,6 +1,7 @@
 import os
 import streamlit as st
 import ollama
+from core.llm import extract_model_names
 from components.upload import handle_file_upload
 from components.chat import display_chat_interface
 from utils.helpers import setup_logging
@@ -13,22 +14,17 @@ def main():
         page_icon="📚",
         layout="wide"
     )
-
     st.title("📚 :rainbow[ChatDocument]")
-    
-    # Sidebar with model selection and file upload
+    # Sidebar
     with st.sidebar:
         st.title("🤖 Select LLM Model")
         # Model selection
-        # Model selection
-        import ollama
-        from core.llm import extract_model_names
         try:
             models_info = ollama.list()
             available_models = extract_model_names(models_info)
             if not available_models:
-                available_models = ("llama2",)
-                st.warning("No models found. Using default model: llama2")
+                available_models = ("llama3.2:latest",)
+                st.warning("No models found. Using default model: llama3.2:latest")
             
             current_index = 0
             if "selected_model" in st.session_state and st.session_state.selected_model in available_models:
@@ -42,7 +38,7 @@ def main():
             st.session_state.selected_model = selected_model
         except Exception as e:
             st.error(f"Error loading models: {str(e)}")
-            st.session_state.selected_model = "llama2"
+            st.session_state.selected_model = "llama3.2:latest"
         st.title("📑 Upload Document")
         documents = handle_file_upload()
         

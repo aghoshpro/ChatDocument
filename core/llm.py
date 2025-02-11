@@ -26,7 +26,7 @@ def get_available_models():
     try:
         models_info = ollama.list()
         model_names = extract_model_names(models_info)
-        return model_names if model_names else ("llama2",)
+        return model_names if model_names else ("llama3.2:latest",)
     except Exception as e:
         st.error(f"Error fetching models: {str(e)}")
         return ("llama3.2")

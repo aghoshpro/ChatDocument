@@ -20,6 +20,8 @@ from langchain.schema import Document
 from utils.helpers import get_file_extension
 import logging
 import pandas as pd
+import geopandas as gpd
+from io import StringIO
 
 logger = logging.getLogger(__name__)
 
@@ -96,23 +98,15 @@ def delete_vector_store():
 
 def handle_file_upload() -> Optional[list]:
     """Handle document upload and processing with advanced chunking"""
-    # col1, col2 = st.columns([1, 1])
-    # with col1:
-    #     st.markdown("### Upload Document")
-    # with col2:
-    #     if st.button("Delete Document", type="secondary"):
-    #         delete_vector_store()
-    #         st.rerun()
-
     uploaded_file = st.file_uploader(
         "",
         type=[fmt[1:] for fmt in SUPPORTED_FORMATS.keys()]
     )
 
     # Show supported formats in the UI
-    st.markdown("# ✅ Supported Formats")
-    formats_text = " | ".join([f"{desc[0]} (*.{ext[1:]})" for ext, desc in SUPPORTED_FORMATS.items()])
-    st.caption(f"{formats_text}")
+    # st.markdown("# ✅ Supported Formats")
+    # formats_text = " | ".join([f"{desc[0]} (*.{ext[1:]})" for ext, desc in SUPPORTED_FORMATS.items()])
+    # st.caption(f"{formats_text}")
 
     st.markdown("# ❌ Remove Document")
     if st.button("Delete Document", type="secondary"):
@@ -174,10 +168,29 @@ def handle_file_upload() -> Optional[list]:
                     except Exception:
                         # Fallback to UnstructuredWordDocumentLoader if Docx2txtLoader fails
                         loader = UnstructuredWordDocumentLoader(file_path)
-                elif file_extension in ['.json', '.geojson']:
+                elif file_extension in ['.json']:
                     with open(file_path, 'r') as f:
                         json_content = extract_json_content(json.load(f))
                     documents = [Document(page_content=json_content, metadata={"source": file_path})]
+                    return documents
+                elif file_extension in ['.geojson']:
+                    with open(file_path, 'r') as f:
+                        try:
+                            geojson_str = uploaded_file.getvalue().decode('utf-8')
+                            # Save geojson_str to session state to be used in another file
+                            json_content = extract_json_content(json.loads(geojson_str))
+                            documents = [Document(page_content=json_content, metadata={"source": file_path})]
+                            st.session_state.geojson_str = geojson_str
+                            gdf = gpd.read_file(StringIO(geojson_str))
+                            if 'dataframe' not in st.session_state:
+                                    st.session_state.dataframe = {}
+                            st.session_state.dataframe[file_path] = gdf
+                        except json.JSONDecodeError:
+                            st.error("Invalid GeoJSON file. Please ensure the file is properly formatted.")
+                            return None
+                        except Exception as e:
+                            st.error(f"Error processing GeoJSON file: {str(e)}")
+                            return None
                     return documents
                 elif file_extension == '.csv':
                     df = pd.read_csv(file_path)

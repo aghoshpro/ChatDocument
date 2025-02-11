@@ -1,12 +1,12 @@
 # ChatDocument
+
 <img src="./assets/ui.png" alt="Streamlit Web App" width="100%">
 
-
-Local RAG (Retrieval Augmented Generation) application that allows you to chat with your documents such as any document such as `.txt`, `.pdf`, `.md`,  `.docx`, `.doc`, `.json` (including `.geojson`) using Ollama LLMs and LangChain via a Streamlit Web UI for Q&A interaction.
+Local RAG (Retrieval Augmented Generation) application that allows you to chat with your documents such as any document such as `.txt`, `.pdf`, `.md`, `.docx`, `.doc`, `.json` (including `.geojson`) using Ollama LLMs and LangChain via a Streamlit Web UI for Q&A interaction.
 
 ## 📚 RAG System Architecture
- <img src="./assets/rag.png" alt="Streamlit Web App" width="100%">
 
+ <img src="./assets/rag.png" alt="Streamlit Web App" width="100%">
 
 ## 📂 Project Structure
 
@@ -14,7 +14,7 @@ Local RAG (Retrieval Augmented Generation) application that allows you to chat w
 .
 ├── .streamlit/
 │   └── config.toml       # Streamlit configuration (OPTIONAL)
-├── assets/ 
+├── assets/
 │   └── ui.png            # Streamlit UI image
 ├── components/
 │   ├── __init__.py
@@ -37,67 +37,74 @@ Local RAG (Retrieval Augmented Generation) application that allows you to chat w
 
 ### 1. **Install Ollama**
 
-   - Visit [Ollama's website](https://ollama.com) to download library and install
-   - Open `cmd` or `terminal` to pull required models:
-     ```bash
-     ollama pull llama3.2  # or your preferred model
-     ollama pull nomic-embed-text
-     ```
+- Visit [Ollama's website](https://ollama.com) to download library and install
+- Open `cmd` or `terminal` and run `ollama` to check the installation
 
-   - Pull (or run) deepseek model:
-     ```bash
-     ollama run deepseek-r1:8b
-     ```
+- Pull required models:
 
-  - Pull mistral-large-latest model:
-    ```bash
-    ollama run mistral:7b
-    ```
+  ```bash
+  ollama pull llama3.2  # or your preferred model
+  ollama pull nomic-embed-text
+  ```
+
+- Pull (or run) deepseek model:
+
+  ```bash
+  ollama run deepseek-r1:8b
+  ```
+
+- Check the list of locally available ollama models:
+  ```bash
+  ollama list
+  ```
 
 ### 2. **Clone Repository**
+
 - Open `cmd` or `terminal` to clone repository and run the following commands:
 
-   ```bash
-   https://github.com/aghoshpro/ChatDocumentRAG.git
-   ```
- - Create a working directory and navigate to it:
-    ```bash
-    cd ChatDocumentRAG
-    ```
+  ```bash
+  https://github.com/aghoshpro/ChatDocumentRAG.git
+  ```
+
+- Create a working directory and navigate to it:
+  ```bash
+  cd ChatDocumentRAG
+  ```
 
 ### 3. **Set Up Local Environment**
 
 - Create a virtual environment `myvenv` and activate it:
-   ```bash
-   python -m venv myvenv
-   ```
 
-   ```bash
-   .\myvenv\Scripts\activate    # On Windows
+  ```bash
+  python -m venv myvenv
+  ```
 
-   # ---------------------- OR ---------------------- #
+  ```bash
+  .\myvenv\Scripts\activate    # On Windows
+
+  # ---------------------- OR ---------------------- #
 
   source myvenv/bin/activate  # On Linux or Mac
-   ```
+  ```
+
 - Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
+  ```bash
+  pip install -r requirements.txt
+  ```
 
 ## 🎮 Run Streamlit Web App
 
 ```bash
 streamlit run main.py
 ```
-- Content View 
-<img src="./assets/ui.png" alt="Streamlit Web App" width="100%">
+
+- Content View
+  <img src="./assets/ui.png" alt="Streamlit Web App" width="100%">
 
 - WordCloud View:
-<img src="./assets/ui2.png" alt="Streamlit Web App" width="100%">
-
+  <img src="./assets/ui2.png" alt="Streamlit Web App" width="100%">
 
 ## ✨Theme Configuration
-
 
 - Create `.streamlit/config.toml` with:
 
@@ -109,6 +116,7 @@ streamlit run main.py
   textColor = "#262730"
   font = "sans serif"
   ```
+
 ## 📑 References
 
 - [LangChain](https://python.langchain.com/docs/index.html)
