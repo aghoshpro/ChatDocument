@@ -127,5 +127,6 @@ streamlit run main.py
 - [Unstructured](https://docs.unstructured.io/platform/supported-file-types)
 - [Enhancing Retrieval Augmented Generation with ChromaDB and SQLite](https://medium.com/@dassandipan9080/enhancing-retrieval-augmented-generation-with-chromadb-and-sqlite-c499109f8082)
 - [Implementing RAG in LangChain with Chroma](https://medium.com/@callumjmac/implementing-rag-in-langchain-with-chroma-a-step-by-step-guide-16fc21815339)
-
 - [Build Your Own RAG and Run Them Locally](https://blog.duy.dev/build-your-own-rag-and-run-them-locally/)
+- [ChromaDB Tutorial Step by Step Guide](https://www.datacamp.com/tutorial/chromadb-tutorial-step-by-step-guide)
+- [ChromaDB Collections](https://docs.trychroma.com/docs/collections/create-get-delete)

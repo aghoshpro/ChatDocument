@@ -1,5 +1,5 @@
 import streamlit as st
-from typing import Optional
+from typing import Optional, List, Dict
 from langchain_core.documents import Document
 from core.llm import get_llm_chain
 from core.embeddings import get_vector_store
@@ -12,6 +12,7 @@ from streamlit_folium import folium_static
 import geopandas as gpd
 from io import StringIO
 import random
+import time
 
 def initialize_chat_session():
     """Initialize chat session state"""
@@ -20,7 +21,7 @@ def initialize_chat_session():
     if "user_name" not in st.session_state:
         st.session_state.user_name = ""
 
-def display_chat_interface(documents: Optional[list[Document]] = None):
+def display_chat_interface(documents: Optional[List[Document]] = None):
     """Display chat interface and handle interactions"""
     initialize_chat_session()
 
@@ -108,7 +109,7 @@ def display_chat_interface(documents: Optional[list[Document]] = None):
                     ).add_to(m)
 
                     # Display the map using streamlit-folium
-                    folium_static(m, width=550, height=500)
+                    folium_static(m, width=650, height=500)
                 else:
                     st.info("No geographic data found in the document")
         else:
@@ -126,7 +127,7 @@ def display_chat_interface(documents: Optional[list[Document]] = None):
         chat_container = st.container()
         
         # Input field at the bottom
-        prompt = st.chat_input(f"Hi {st.session_state.user_name}, what do you want to know about the document?")
+        prompt = st.chat_input(f"Hi {st.session_state.user_name}, how can I help you today?")
         
         # Display chat history in the container
         with chat_container:
@@ -144,13 +145,13 @@ def display_chat_interface(documents: Optional[list[Document]] = None):
                     "content": prompt
                 })
                 with st.chat_message("user"):
-                    st.markdown(f"{st.session_state.user_name}: {prompt}")
+                    st.markdown(f":red[{st.session_state.user_name}] - {prompt}")
 
                 # Generate response
                 with st.chat_message("assistant"):
                     if documents:
                         try:
-                            with st.spinner("I am thinking...⏳"):
+                            with st.spinner(":grey[I am thinking...]⏳"):
                                 # Add a witty comment before generating the response
                                 # st.markdown("Let me put on my thinking cap... 🎩")
                                 vector_store = get_vector_store(documents)
@@ -169,13 +170,20 @@ def display_chat_interface(documents: Optional[list[Document]] = None):
                                 ]
 
                                 # Select a random quirky response
-                                quirky_response = f"{response} \n\n{random.choice(quirky_responses)}"
+                                quirky_response = f":rainbow[{response}]\n\n{random.choice(quirky_responses)}"
                                 
+                                # Typing effect
+                                placeholder = st.empty()
+                                typed_response = ""
+                                for char in quirky_response:
+                                    typed_response += char
+                                    placeholder.markdown(typed_response, unsafe_allow_html=True)
+                                    time.sleep(0.04)  # Adjust typing speed here
+
                                 st.session_state.messages.append({
                                     "role": "assistant",
                                     "content": quirky_response
                                 })
-                                st.markdown(quirky_response)
                         except Exception as e:
                             error_msg = f"Oops! My circuits got tangled: {str(e)}"
                             st.error(error_msg)
