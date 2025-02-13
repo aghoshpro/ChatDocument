@@ -1,3 +1,4 @@
+# type: ignore
 import streamlit as st
 from typing import Optional, List, Dict
 from langchain_core.documents import Document

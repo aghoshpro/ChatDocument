@@ -25,7 +25,7 @@ Local RAG (Retrieval Augmented Generation) application that allows you to chat w
 │   ├── embeddings.py     # Vector embeddings configuration
 │   └── llm.py            # Language model setup
 ├── data/
-│   ├── vector_store/     # ChromaDB vector store for embeddings
+│   ├── vector_store/     # To store vector embeddings in chromadb
 │   └── sample_docs/      # Sample documents for testing
 ├── utils/
 │   ├── __init__.py
