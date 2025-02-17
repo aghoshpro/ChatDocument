@@ -32,89 +32,91 @@ def display_chat_interface(documents: Optional[List[Document]] = None):
     # Document viewer column
     with doc_col:
         st.subheader("Doc Information")
-        if documents:
-            tabs = st.tabs(["Content 📄", "𝒲ord Cloud 🔠", "Data View 📊", "Map View 🌎"])
+        doc_container = st.container(height=600)
+        with doc_container:
+            if documents:
+                tabs = st.tabs(["Content 📄", "𝒲ord Cloud 🔠", "Data View 📊", "Map View 🌎"])
 
-            # Content Tab
-            with tabs[0]:
-                chunk_tabs = st.tabs(
-                    [f"Chunk {i+1}" for i in range(len(documents))])
-                for i, tab in enumerate(chunk_tabs):
-                    with tab:
-                        st.text(documents[i].page_content)
+                # Content Tab
+                with tabs[0]:
+                    chunk_tabs = st.tabs(
+                        [f"Chunk {i+1}" for i in range(len(documents))])
+                    for i, tab in enumerate(chunk_tabs):
+                        with tab:
+                            st.text(documents[i].page_content)
 
-            # Word Cloud Tab
-            with tabs[1]:
-                # Download stopwords if not already downloaded
-                try:
-                    nltk.data.find('corpora/stopwords')
-                except LookupError:
-                    nltk.download('stopwords')
+                # Word Cloud Tab
+                with tabs[1]:
+                    # Download stopwords if not already downloaded
+                    try:
+                        nltk.data.find('corpora/stopwords')
+                    except LookupError:
+                        nltk.download('stopwords')
 
-                # Combine all document chunks
-                text = " ".join([doc.page_content for doc in documents])
+                    # Combine all document chunks
+                    text = " ".join([doc.page_content for doc in documents])
 
-                # Generate wordcloud
-                stop_words = set(stopwords.words('english'))
-                wordcloud = WordCloud(width=800,
-                                      height=600,
-                                      background_color='white',
-                                      stopwords=stop_words).generate(text)
+                    # Generate wordcloud
+                    stop_words = set(stopwords.words('english'))
+                    wordcloud = WordCloud(width=800,
+                                        height=610,
+                                        background_color='white',
+                                        stopwords=stop_words).generate(text)
 
-                # Display wordcloud
-                plt.figure(figsize=(10, 5))
-                plt.imshow(wordcloud, interpolation='bilinear')
-                plt.axis('off')
-                st.pyplot(plt)
+                    # Display wordcloud
+                    plt.figure(figsize=(10, 5))
+                    plt.imshow(wordcloud, interpolation='bilinear')
+                    plt.axis('off')
+                    st.pyplot(plt)
 
-            # Data View Tab
-            with tabs[2]:
-                if 'dataframe' in st.session_state:
-                    for doc in documents:
-                        source = doc.metadata.get('source', '')
-                        if source in st.session_state.dataframe:
-                            st.dataframe(st.session_state.dataframe[source])
-                        else:
-                            st.info("No tabular data available for this document")
-                else:
-                    st.info("No tabular data available")
+                # Data View Tab
+                with tabs[2]:
+                    if 'dataframe' in st.session_state:
+                        for doc in documents:
+                            source = doc.metadata.get('source', '')
+                            if source in st.session_state.dataframe:
+                                st.dataframe(st.session_state.dataframe[source])
+                            else:
+                                st.info("No tabular data available for this document")
+                    else:
+                        st.info("No tabular data available")
 
-            # Map View Tab
-            with tabs[3]:
-                if 'geojson_str' in st.session_state:
-                    geojson_str = st.session_state.geojson_str
-                    # Now you can use geojson_str as needed
-                    gdf = gpd.read_file(StringIO(geojson_str))
-                    non_geometry_cols = [col for col in gdf.columns if col != 'geometry']
-                    # Compute bounding box
-                    bounds = gdf.total_bounds
-                    minx, miny, maxx, maxy = bounds
-                    # Generate Folium map
-                    m = folium.Map(location=[(miny + maxy) / 2, (minx + maxx) / 2], zoom_start=9)
-                    m.fit_bounds([[miny, minx], [maxy, maxx]])  # Set map bounds to match GeoDataFrame
-                    folium.GeoJson(gdf).add_to(m)  # Ensure GeoJSON is in WGS 84
-                    # Add GeoJSON to map with hover functionality
-                    folium.GeoJson(
-                        data=gdf.to_json(),
-                        style_function=lambda x: {
-                            'fillColor': '#ffaf00',
-                            'color': '#000000',
-                            'weight': 1,
-                            'fillOpacity': 0.6
-                        },
-                        tooltip=folium.GeoJsonTooltip(
-                            fields=non_geometry_cols[:5],  # Show first 5 properties on hover
-                            aliases=non_geometry_cols[:5],
-                            style=("background-color: white; color: #333333; font-family: arial; font-size: 12px; padding: 10px;")
-                        )
-                    ).add_to(m)
+                # Map View Tab
+                with tabs[3]:
+                    if 'geojson_str' in st.session_state:
+                        geojson_str = st.session_state.geojson_str
+                        # Now you can use geojson_str as needed
+                        gdf = gpd.read_file(StringIO(geojson_str))
+                        non_geometry_cols = [col for col in gdf.columns if col != 'geometry']
+                        # Compute bounding box
+                        bounds = gdf.total_bounds
+                        minx, miny, maxx, maxy = bounds
+                        # Generate Folium map
+                        m = folium.Map(location=[(miny + maxy) / 2, (minx + maxx) / 2], zoom_start=9)
+                        m.fit_bounds([[miny, minx], [maxy, maxx]])  # Set map bounds to match GeoDataFrame
+                        folium.GeoJson(gdf).add_to(m)  # Ensure GeoJSON is in WGS 84
+                        # Add GeoJSON to map with hover functionality
+                        folium.GeoJson(
+                            data=gdf.to_json(),
+                            style_function=lambda x: {
+                                'fillColor': '#ffaf00',
+                                'color': '#000000',
+                                'weight': 1,
+                                'fillOpacity': 0.6
+                            },
+                            tooltip=folium.GeoJsonTooltip(
+                                fields=non_geometry_cols[:5],  # Show first 5 properties on hover
+                                aliases=non_geometry_cols[:5],
+                                style=("background-color: white; color: #333333; font-family: arial; font-size: 12px; padding: 10px;")
+                            )
+                        ).add_to(m)
 
-                    # Display the map using streamlit-folium
-                    folium_static(m, width=650, height=500)
-                else:
-                    st.info("No geographic data found in the document")
-        else:
-            st.info("Upload a document to see its content here")
+                        # Display the map using streamlit-folium
+                        folium_static(m, width=600, height=500)
+                    else:
+                        st.info("No geographic data found in the document")
+            else:
+                st.info("Upload a document to see its content here")
 
     # Chat column
     with chat_col:
@@ -125,7 +127,7 @@ def display_chat_interface(documents: Optional[List[Document]] = None):
             st.session_state.user_name = st.text_input("Please enter your name:")
 
         # Container for chat messages
-        chat_container = st.container()
+        chat_container = st.container(height=545)
         
         # Input field at the bottom
         prompt = st.chat_input(f"Hi {st.session_state.user_name}, how can I help you today?")

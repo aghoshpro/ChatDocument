@@ -1,8 +1,8 @@
 # ChatDocument
 
-<img src="./assets/ui.png" alt="Streamlit Web App" width="100%">
+<img src="./assets/chatoutput.gif" alt="Streamlit Web App" width="100%">
 
-Local RAG (Retrieval Augmented Generation) application that allows you to chat with your documents such as any document such as `.txt`, `.pdf`, `.md`, `.docx`, `.doc`, `.json` (including `.geojson`) using Ollama LLMs and LangChain via a Streamlit Web UI for Q&A interaction.
+Local Retrieval Augmented Generation (RAG) application that allows you to chat with your documents such as any document such as `.txt`, `.pdf`, `.md`, `.docx`, `.doc`, `.json` (including `.geojson`) using Ollama LLMs and LangChain via a Streamlit Web UI for Q&A interaction.
 
 ## 📚 RAG System Architecture
 
@@ -33,6 +33,14 @@ Local RAG (Retrieval Augmented Generation) application that allows you to chat w
 └── main.py               # Application entry point
 ```
 
+## ✨ Features
+- 🔒 Complete local processing - no data leaves your machine
+- 📄 Multi document (`.txt`, `.pdf`, `.md`, `.docx`, `.doc`, `.json`) processing with intelligent chunking
+- 🧠 Multi-query retrieval for better context understanding
+- 🎯 Advanced RAG implementation using LangChain
+- 🖥️ Clean Streamlit interface
+- 📓 Jupyter notebook for experimentation
+
 ## 🚀 Getting Started
 
 ### 1. **Install Ollama**
@@ -40,7 +48,7 @@ Local RAG (Retrieval Augmented Generation) application that allows you to chat w
 - Visit [Ollama's website](https://ollama.com) to download library and install
 - Open `cmd` or `terminal` and run `ollama` to check the installation
 
-- Pull required models:
+- Pull initial models:
 
   ```bash
   ollama pull llama3.2  # or your preferred model
@@ -57,13 +65,12 @@ Local RAG (Retrieval Augmented Generation) application that allows you to chat w
   ```bash
   ollama list
   ```
-
 ### 2. **Clone Repository**
 
 - Open `cmd` or `terminal` to clone repository and run the following commands:
 
   ```bash
-  https://github.com/aghoshpro/ChatDocumentRAG.git
+  git clone https://github.com/aghoshpro/ChatDocument.git
   ```
 
 - Create a working directory and navigate to it:
@@ -91,18 +98,27 @@ Local RAG (Retrieval Augmented Generation) application that allows you to chat w
   ```bash
   pip install -r requirements.txt
   ```
-
+- 🧪 Experiment with code if you want
+  ```sh
+  jupyter notebook
+  ```
 ## 🎮 Run Streamlit Web App
 
 ```bash
 streamlit run main.py
 ```
-
 - Content View
   <img src="./assets/ui.png" alt="Streamlit Web App" width="100%">
 
 - WordCloud View:
   <img src="./assets/ui2.png" alt="Streamlit Web App" width="100%">
+
+## 🛠 Troubleshooting
+
+- Ensure Ollama is running in the background
+- GPU preferred if not CPU (will be slower)
+- ./data/sample_docs contains few local documents for you to test
+- Delete data/vector_store/ that holds embeddings in case delete file option failed to delete docs.
 
 ## ✨Theme Configuration
 
@@ -116,6 +132,9 @@ streamlit run main.py
   textColor = "#262730"
   font = "sans serif"
   ```
+## 🤝 Contributing
+- Open issues for bugs or suggestions
+- Submit pull requests
 
 ## 📑 References
 
