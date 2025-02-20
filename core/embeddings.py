@@ -1,19 +1,20 @@
 from langchain_ollama import OllamaEmbeddings
-from langchain_community.vectorstores import Chroma
+# from langchain_community.vectorstores import Chroma
+from langchain_chroma import Chroma
 import chromadb
 import os
 import logging
 logger = logging.getLogger(__name__)
 
-def get_vector_store(documents=None):
+def get_vector_store(documents=None, force_refresh=False):
     """Get or create vector store"""
     persist_directory = "data/vector_store"
     
     # Ensure the directory exists
     os.makedirs(persist_directory, exist_ok=True)
     
-    # Initialize embeddings
-    embeddings = OllamaEmbeddings(model="llama3.2")
+    # Initialize embeddings with mxbai-embed-large
+    embeddings = OllamaEmbeddings(model="mxbai-embed-large")
     
     # Initialize ChromaDB client with explicit settings
     chroma_client = chromadb.PersistentClient(
@@ -25,7 +26,14 @@ def get_vector_store(documents=None):
     )
     
     # Create or load vector store
-    if documents:
+    if documents and force_refresh:
+        # Reset existing collections when new documents are added
+        try:
+            chroma_client.reset()
+            logger.info("Reset ChromaDB collections for new documents")
+        except Exception as e:
+            logger.warning(f"Error resetting ChromaDB: {str(e)}")
+        
         return Chroma.from_documents(
             documents=documents,
             embedding=embeddings,
@@ -33,6 +41,7 @@ def get_vector_store(documents=None):
             client=chroma_client
         )
     else:
+        # Load existing vector store
         return Chroma(
             embedding_function=embeddings,
             persist_directory=persist_directory,

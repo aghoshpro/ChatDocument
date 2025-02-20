@@ -6,6 +6,7 @@ from core.llm import extract_model_names
 from components.upload import handle_file_upload
 from components.chat import display_chat_interface
 from utils.helpers import setup_logging
+from core.embeddings import get_vector_store
 os.environ["PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION"] = "python"
 logger = setup_logging()
 
@@ -45,7 +46,10 @@ def main():
         
         if documents:
             st.session_state['documents'] = documents
-            # st.success(f"Document processed: {len(documents)} chunks created")
+            # Create vector store with force_refresh=True for new documents
+            vector_store = get_vector_store(documents, force_refresh=True)
+            st.session_state['vector_store'] = vector_store
+            st.success(f"Document processed: {len(documents)} chunks created")
         elif 'documents' in st.session_state:
             documents = st.session_state['documents']
     

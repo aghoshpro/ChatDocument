@@ -59,7 +59,7 @@ def display_chat_interface(documents: Optional[List[Document]] = None):
                     # Generate wordcloud
                     stop_words = set(stopwords.words('english'))
                     wordcloud = WordCloud(width=800,
-                                        height=610,
+                                        height=440,
                                         background_color='white',
                                         stopwords=stop_words).generate(text)
 
@@ -155,12 +155,14 @@ def display_chat_interface(documents: Optional[List[Document]] = None):
                     if documents:
                         try:
                             with st.spinner(":grey[I am thinking...]⏳"):
-                                # Add a witty comment before generating the response
-                                # st.markdown("Let me put on my thinking cap... 🎩")
-                                vector_store = get_vector_store(documents)
+                                # Start timer
+                                start_time = time.time()
+                                
+                                # Get existing vector store from session state or create new one
+                                vector_store = st.session_state.get('vector_store') or get_vector_store(documents)
                                 chain = get_llm_chain(vector_store)
                                 response = chain.invoke(prompt)
-                                
+
                                 # List of quirky responses
                                 quirky_responses = [
                                     "Phew! That was a brain workout! 🧠💪",
@@ -175,17 +177,25 @@ def display_chat_interface(documents: Optional[List[Document]] = None):
                                 # Select a random quirky response
                                 quirky_response = f":rainbow[{response}]\n\n{random.choice(quirky_responses)}"
                                 
+                                # Calculate elapsed time
+                                elapsed_time = time.time() - start_time
+                                
+                                # Add timing information to the response
+                                response_with_time = f"{quirky_response} |  󠀠 󠀠󠀠󠀠󠀠󠀠:stopwatch: _{elapsed_time:.2f} sec_"
+
+                                # response_with_time = f"{quirky_response} | 󠀠󠀠󠀠󠀠󠀠 󠀠 󠀠 󠀠 󠀠 󠀠󠀠󠀠󠀠󠀠 󠀠 󠀠 󠀠 󠀠 󠀠󠀠󠀠󠀠󠀠 󠀠 󠀠 󠀠 󠀠 󠀠󠀠󠀠󠀠󠀠 󠀠 󠀠 󠀠 󠀠 󠀠󠀠󠀠󠀠󠀠 󠀠 󠀠 󠀠 󠀠 󠀠󠀠󠀠󠀠󠀠 󠀠 󠀠 󠀠 󠀠 󠀠󠀠󠀠󠀠󠀠 󠀠 󠀠 󠀠 󠀠 󠀠󠀠󠀠󠀠󠀠 󠀠 󠀠 󠀠 󠀠 󠀠󠀠󠀠󠀠󠀠 󠀠 󠀠 󠀠 󠀠 󠀠󠀠󠀠󠀠󠀠 󠀠 󠀠 󠀠 󠀠(:stopwatch: _{elapsed_time:.2f} sec_)"
+                                
                                 # Typing effect
                                 placeholder = st.empty()
                                 typed_response = ""
-                                for char in quirky_response:
+                                for char in response_with_time:
                                     typed_response += char
                                     placeholder.markdown(typed_response, unsafe_allow_html=True)
-                                    time.sleep(0.04)  # Adjust typing speed here
+                                    time.sleep(0.001)  # Adjust typing speed here
 
                                 st.session_state.messages.append({
                                     "role": "assistant",
-                                    "content": quirky_response
+                                    "content": response_with_time
                                 })
                         except Exception as e:
                             error_msg = f"Oops! My circuits got tangled: {str(e)}"

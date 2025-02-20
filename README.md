@@ -49,15 +49,15 @@ Local Retrieval Augmented Generation (RAG) application that allows you to chat w
 
 - Open `cmd` or `terminal` and run `ollama`
 
-- Install initial models (local):
+- Install LLM models (locally):
 
   ```bash
   ollama pull llama3.2  
   ollama pull deepseek-r1:8b
-  ollama pull [your preferred model name]
+  ollama pull <your preferred model name>
   ```
 
-- Chat with the model,
+- Chat with the model in `terminal`,
 
   ```bash
   ollama run llama3.2   # or your preferred model
@@ -105,8 +105,7 @@ Local Retrieval Augmented Generation (RAG) application that allows you to chat w
   ```sh
   jupyter notebook
   ```
-## 🎮 Run Streamlit Web App
-
+## 🎮 Run
 ```bash
 streamlit run main.py
 ```
@@ -158,3 +157,6 @@ streamlit run main.py
 - [Enhancing Retrieval Augmented Generation with ChromaDB and SQLite](https://medium.com/@dassandipan9080/enhancing-retrieval-augmented-generation-with-chromadb-and-sqlite-c499109f8082)
 - [Implementing RAG in LangChain with Chroma](https://medium.com/@callumjmac/implementing-rag-in-langchain-with-chroma-a-step-by-step-guide-16fc21815339)
 - [Build Your Own RAG and Run Them Locally](https://blog.duy.dev/build-your-own-rag-and-run-them-locally/)
+
+### Stack Overflow
+- [Langchain Ollama Module Difference](https://stackoverflow.com/questions/78921530/langchain-ollama-module-difference)

@@ -23,6 +23,7 @@ import logging
 import pandas as pd
 import geopandas as gpd
 from io import StringIO
+import chromadb
 
 logger = logging.getLogger(__name__)
 
@@ -90,23 +91,51 @@ def delete_vector_store():
     import shutil
     vector_store_path = "data/vector_store"
     
-    # Debug: Check if the path exists
+    # First, try to close any existing ChromaDB connections
+    try:
+        # Initialize ChromaDB client
+        chroma_client = chromadb.PersistentClient(
+            path=vector_store_path,
+            settings=chromadb.Settings(
+                allow_reset=True,
+                is_persistent=True
+            )
+        )
+        
+        # Reset and close the client
+        chroma_client.reset()
+        del chroma_client
+        
+        # Small delay to ensure connections are closed
+        import time
+        time.sleep(0.5)
+        
+    except Exception as e:
+        logger.warning(f"Error while closing ChromaDB connection: {str(e)}")
+
+    # Now try to delete the directory
     if os.path.exists(vector_store_path):
         try:
             shutil.rmtree(vector_store_path)
             logger.info(f"Deleted vector store at {vector_store_path}")
+            
+            # Recreate empty directory
+            os.makedirs(vector_store_path, exist_ok=True)
+            
         except Exception as e:
             logger.error(f"Failed to delete vector store: {str(e)}")
             st.error(f"Failed to delete vector store: {str(e)}")
             return
 
     # Clear all related session state
-    for key in ['documents', 'messages']:
+    keys_to_clear = ['documents', 'messages', 'dataframe', 'geojson_str']
+    for key in keys_to_clear:
         if key in st.session_state:
             del st.session_state[key]
             logger.info(f"Cleared session state for key: {key}")
 
     st.success("Vector store and chat history deleted successfully!")
+    st.rerun()  # Force streamlit to rerun
 
 def handle_file_upload() -> Optional[list]:
     """Handle document upload and processing with advanced chunking"""
@@ -123,6 +152,7 @@ def handle_file_upload() -> Optional[list]:
     st.markdown("# ❌ Remove Document")
     if st.button("Delete Document", type="secondary"):
         delete_vector_store()
+        st.success("Document deleted successfully!")
         st.rerun()
 
     # Chunking strategy configuration
