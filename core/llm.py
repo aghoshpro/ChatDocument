@@ -1,5 +1,5 @@
-from langchain_community.llms import Ollama
-# from langchain_ollama import OllamaLLM
+# from langchain_community.llms import Ollama
+from langchain_ollama import OllamaLLM
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough
 from langchain.prompts import PromptTemplate
@@ -35,7 +35,7 @@ def get_available_models():
 def get_llm():
     """Initialize and return Ollama LLM with selected model"""
     selected_model = st.session_state.get('selected_model', 'llama3.2')
-    return Ollama(model=selected_model)
+    return OllamaLLM(model=selected_model)
 
 def get_llm_chain(vector_store):
     """Create and return the RAG chain"""

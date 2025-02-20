@@ -14,7 +14,7 @@ def get_vector_store(documents=None, force_refresh=False):
     os.makedirs(persist_directory, exist_ok=True)
     
     # Initialize embeddings with mxbai-embed-large
-    embeddings = OllamaEmbeddings(model="mxbai-embed-large")
+    embeddings = OllamaEmbeddings(model="mxbai-embed-large") # mxbai-embed-large, llama3.2
     
     # Initialize ChromaDB client with explicit settings
     chroma_client = chromadb.PersistentClient(
