@@ -4,6 +4,8 @@ __pycache__
 *.pyc
 *.py[cod]
 *.so
+*.sqlite3
+*.bin
 *.egg-info/
 dist/
 build/
