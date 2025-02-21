@@ -1,8 +1,8 @@
 # ChatDocument
 
-<img src="./assets/chatoutput.gif" alt="Streamlit Web App" width="100%">
+<img src="./assets/chatRAG.gif" alt="Streamlit Web App" width="100%">
 
-Local Retrieval Augmented Generation (RAG) application that allows you to chat with your documents such as any document such as `.txt`, `.pdf`, `.md`, `.docx`, `.doc`, `.json` (including `.geojson`) using Ollama LLMs and LangChain via a Streamlit Web UI for Q&A interaction.
+Local Retrieval Augmented Generation (RAG) application that allows you to chat with any documents such as `.txt`,`.pdf`, `.md`, `.docx`, `.doc`, `.json`,`.geojson` using Ollama LLMs and LangChain. Upload your document in the Streamlit Web UI for Q&A interaction.
 
 ## 📚 RAG System Architecture
 
@@ -34,7 +34,7 @@ Local Retrieval Augmented Generation (RAG) application that allows you to chat w
 ```
 
 ## ✨ Features
-- 🔒 Complete local processing - no data leaves your machine
+- 🔒 Complete local data processing - no data leaves your machine
 - 📄 Multi document (`.txt`, `.pdf`, `.md`, `.docx`, `.doc`, `.json`) processing with intelligent chunking
 - 🧠 Multi-query retrieval for better context understanding
 - 🎯 Advanced RAG implementation using LangChain
@@ -45,16 +45,19 @@ Local Retrieval Augmented Generation (RAG) application that allows you to chat w
 
 ### 1. **Install Ollama**
 
-- Visit [Ollama's website](https://ollama.com) to download Ollama and install
+- Visit [Ollama.ai](https://ollama.com) to download Ollama and install
 
 - Open `cmd` or `terminal` and run `ollama`
 
 - Install LLM models (locally):
 
+- Start with `ollama pull llama3.2` as it's very good base llm for general usecase
+- Go to [Ollama Models](https://ollama.com/search) to search and  pull other famous models as follows,
+
   ```bash
-  ollama pull llama3.2  
   ollama pull deepseek-r1:8b
-  ollama pull <your preferred model name>
+  ollama pull dolphin3
+  ollama pull mistral
   ```
 
 - Chat with the model in `terminal`,
@@ -66,7 +69,7 @@ Local Retrieval Augmented Generation (RAG) application that allows you to chat w
 - For embeddings pull the following,
 
   ```bash
-  ollama pull `mxbai-embed-large` # or your preferred model such as `nomic-embed-text`
+  ollama pull mxbai-embed-large # or your preferred model such as `nomic-embed-text`
   ```
 
 - Check the list of locally available ollama models:
@@ -99,13 +102,13 @@ Local Retrieval Augmented Generation (RAG) application that allows you to chat w
 
 - Install dependencies:
   ```bash
-  pip install -r requirements.txt
+  pip install --upgrade -r requirements.txt
   ```
-- 🧪 Experiment with code if you want
+- 🧪 Experiment with code in `*.ipynb`
   ```sh
   jupyter notebook
   ```
-## 🎮 Run
+## 🕹️ Run
 ```bash
 streamlit run main.py
 ```

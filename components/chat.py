@@ -59,7 +59,7 @@ def display_chat_interface(documents: Optional[List[Document]] = None):
                     # Generate wordcloud
                     stop_words = set(stopwords.words('english'))
                     wordcloud = WordCloud(width=800,
-                                        height=440,
+                                        height=540,
                                         background_color='white',
                                         stopwords=stop_words).generate(text)
 
@@ -92,7 +92,7 @@ def display_chat_interface(documents: Optional[List[Document]] = None):
                         bounds = gdf.total_bounds
                         minx, miny, maxx, maxy = bounds
                         # Generate Folium map
-                        m = folium.Map(location=[(miny + maxy) / 2, (minx + maxx) / 2], zoom_start=9)
+                        m = folium.Map(location=[(miny + maxy) / 2, (minx + maxx) / 2], zoom_start=8)
                         m.fit_bounds([[miny, minx], [maxy, maxx]])  # Set map bounds to match GeoDataFrame
                         folium.GeoJson(gdf).add_to(m)  # Ensure GeoJSON is in WGS 84
                         # Add GeoJSON to map with hover functionality
@@ -102,7 +102,7 @@ def display_chat_interface(documents: Optional[List[Document]] = None):
                                 'fillColor': '#ffaf00',
                                 'color': '#000000',
                                 'weight': 1,
-                                'fillOpacity': 0.6
+                                'fillOpacity': 0.5
                             },
                             tooltip=folium.GeoJsonTooltip(
                                 fields=non_geometry_cols[:5],  # Show first 5 properties on hover

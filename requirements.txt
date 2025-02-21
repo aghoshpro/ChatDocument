@@ -1,12 +1,15 @@
 ipykernel
 ollama
 streamlit
+st-annotated-text
 streamlit-folium
 folium
 docx2txt
 jq
 wordcloud
 nltk
+numpy
+numba
 pandas
 geopandas
 tiktoken
