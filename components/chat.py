@@ -85,7 +85,6 @@ def display_chat_interface(documents: Optional[List[Document]] = None):
                 with tabs[3]:
                     if 'geojson_str' in st.session_state:
                         geojson_str = st.session_state.geojson_str
-                        # Now you can use geojson_str as needed
                         gdf = gpd.read_file(StringIO(geojson_str))
                         non_geometry_cols = [col for col in gdf.columns if col != 'geometry']
                         # Compute bounding box
@@ -124,13 +123,13 @@ def display_chat_interface(documents: Optional[List[Document]] = None):
         
         # Input for user's name
         if not st.session_state.user_name:
-            st.session_state.user_name = st.text_input("Please enter your name:")
+            st.session_state.user_name = st.text_input("Say your name, human")
 
         # Container for chat messages
         chat_container = st.container(height=545)
         
         # Input field at the bottom
-        prompt = st.chat_input(f"Hi {st.session_state.user_name}, how can I help you today?")
+        prompt = st.chat_input(f"So, it's {st.session_state.user_name} huh, feed me your documents...")
         
         # Display chat history in the container
         with chat_container:

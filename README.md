@@ -2,9 +2,9 @@
 
 <img src="./assets/chatRAG.gif" alt="Streamlit Web App" width="100%">
 
-Local Retrieval Augmented Generation (RAG) application that allows you to chat with any documents such as `.txt`,`.pdf`, `.md`, `.docx`, `.doc`, `.json`,`.geojson` using Ollama LLMs and LangChain. Upload your document in the Streamlit Web UI for Q&A interaction.
+Retrieval Augmented Generation (RAG) application that allows you to chat with any of your local documents in disparate formats e.g., `.txt`,`.pdf`, `.md`, `.docx`, `.doc`, `.json`,`.geojson` using Ollama LLMs and LangChain. Upload your document in the Streamlit Web UI for Q&A interaction. Have fun
 
-## 📚 RAG System Architecture
+## 📚 RAG Architecture
 
  <img src="./assets/rag.png" alt="Streamlit Web App" width="100%">
 
@@ -34,12 +34,12 @@ Local Retrieval Augmented Generation (RAG) application that allows you to chat w
 ```
 
 ## ✨ Features
-- 🔒 Complete local data processing - no data leaves your machine
 - 📄 Multi document (`.txt`, `.pdf`, `.md`, `.docx`, `.doc`, `.json`) processing with intelligent chunking
 - 🧠 Multi-query retrieval for better context understanding
-- 🎯 Advanced RAG implementation using LangChain
-- 🖥️ Clean Streamlit interface
+- 🎯 Advanced RAG implementation using LangChain and Ollama
+- 🔒 Complete local data processing - no data leaves your machine
 - 📓 Jupyter notebook for experimentation
+- 🖥️ Clean Streamlit UI
 
 ## 🚀 Getting Started
 
@@ -51,13 +51,12 @@ Local Retrieval Augmented Generation (RAG) application that allows you to chat w
 
 - Install LLM models (locally):
 
-- Start with `ollama pull llama3.2` as it's very good base llm for general usecase
-- Go to [Ollama Models](https://ollama.com/search) to search and  pull other famous models as follows,
+- Start with `ollama pull llama3.2` as it's low sized (4GB) basic llm model tailored for general usecases
+
+- For vector embeddings pull the following,
 
   ```bash
-  ollama pull deepseek-r1:8b
-  ollama pull dolphin3
-  ollama pull mistral
+  ollama pull mxbai-embed-large # or `nomic-embed-text`
   ```
 
 - Chat with the model in `terminal`,
@@ -66,10 +65,12 @@ Local Retrieval Augmented Generation (RAG) application that allows you to chat w
   ollama run llama3.2   # or your preferred model
   ```
 
-- For embeddings pull the following,
+- Go to [Ollama Models](https://ollama.com/search) to search and pull other famous models as follows,
 
   ```bash
-  ollama pull mxbai-embed-large # or your preferred model such as `nomic-embed-text`
+  ollama pull dolphin3
+  ollama pull deepseek-r1:8b
+  ollama pull mistral
   ```
 
 - Check the list of locally available ollama models:
@@ -78,32 +79,32 @@ Local Retrieval Augmented Generation (RAG) application that allows you to chat w
   ```
 ### 2. **Clone Repository**
 
-- Open `cmd` or `terminal` to clone repository in your preferred file location
+- Open `cmd` or `terminal` and navigate to your preferred directory, then run the following,
 
   ```bash
   git clone https://github.com/aghoshpro/ChatDocument.git
   ```
 
+- Go to the ChatDocument folder using `cd ChatDocument`
+
 ### 3. **Set Up Local Environment**
 
-- Create a virtual environment `myvenv` and activate it:
+- Create a virtual environment `myvenv` inside the `./ChatDocument` folder and activate it:
 
   ```bash
   python -m venv myvenv
   ```
 
   ```bash
-  .\myvenv\Scripts\activate    # On Windows
-
-  # ---------------------- OR ---------------------- #
-
-  source myvenv/bin/activate  # On Linux or Mac
+  # Windows
+  .\myvenv\Scripts\activate    # OR source myvenv/bin/activate (in Linux or Mac)
   ```
 
 - Install dependencies:
   ```bash
   pip install --upgrade -r requirements.txt
   ```
+  
 - 🧪 Experiment with code in `*.ipynb`
   ```sh
   jupyter notebook
@@ -112,6 +113,8 @@ Local Retrieval Augmented Generation (RAG) application that allows you to chat w
 ```bash
 streamlit run main.py
 ```
+- Select `llama3.2` as the model and start chatting.
+
 - Content View
   <img src="./assets/ui.png" alt="Streamlit Web App" width="100%">
 
@@ -121,20 +124,21 @@ streamlit run main.py
 ## 🛠 Troubleshooting
 
 - Ensure Ollama is running in the background
-- GPU preferred if not CPU (will be slower)
-- ./data/sample_docs contains few local documents for you to test
-- Delete data/vector_store/ that holds embeddings in case delete file option failed to delete docs.
+- GPU preferred for good performance if not CPU (will be slower)
+- `./data/sample_docs` contains few sample documents for you to test
+- Use `pip list` or `pip freeze` to check currently installed packages
+<!-- - Delete `./data/vector_store/` that holds embeddings in case delete file option failed to delete docs. -->
 
 ## ✨Theme Configuration
 
-- Create `.streamlit/config.toml` with:
+- Edit `.streamlit/config.toml` for your color preferences
 
   ```toml
   [theme]
   primaryColor = "#FF4B4B"
-  backgroundColor = "#FFFFFF"
-  secondaryBackgroundColor = "#F0F2F6"
-  textColor = "#262730"
+  backgroundColor = "#0E1117"
+  secondaryBackgroundColor = "#262730"
+  textColor = "#FAFAFA"
   font = "sans serif"
   ```
 ## 🤝 Contributing

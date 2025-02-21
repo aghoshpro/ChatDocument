@@ -162,7 +162,7 @@ def handle_file_upload() -> Optional[list]:
             "Chunking Strategy",
             options=list(CHUNKING_STRATEGIES.keys()),
             format_func=lambda x: CHUNKING_STRATEGIES[x],
-            help="Choose how to split your document into chunks"
+            help="Choose how to split the document into chunks"
         )
 
         # Only show size parameters for non-markdown strategies
@@ -280,12 +280,12 @@ def handle_file_upload() -> Optional[list]:
 
             except Exception as e:
                 logger.error(f"Error processing file {uploaded_file.name}: {str(e)}")
-                st.error(f"Error processing your file: {str(e)}")
+                st.error(f"Error processing file: {str(e)}")
                 return None
 
         except Exception as e:
             logger.error(f"Error handling file upload: {str(e)}")
-            st.error("An error occurred while uploading your file. Please try again.")
+            st.error("An error occurred while uploading file. Please try again.")
             return None
 
     return None
