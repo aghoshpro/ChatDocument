@@ -149,14 +149,14 @@ def handle_file_upload() -> Optional[list]:
     # formats_text = " | ".join([f"{desc[0]} (*.{ext[1:]})" for ext, desc in SUPPORTED_FORMATS.items()])
     # st.caption(f"{formats_text}")
 
-    st.markdown("# ❌ Remove Document")
+    st.markdown("# 📕 Remove Document")
     if st.button("Delete Document", type="secondary"):
         delete_vector_store()
         st.success("Document deleted successfully!")
         st.rerun()
 
     # Chunking strategy configuration
-    st.markdown("# 🎟 Chunking")
+    st.markdown("# 🧩 Chunking")
     with st.expander("Settings", expanded=False):
         strategy = st.selectbox(
             "Chunking Strategy",

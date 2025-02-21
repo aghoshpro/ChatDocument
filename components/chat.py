@@ -56,8 +56,11 @@ def display_chat_interface(documents: Optional[List[Document]] = None):
                     # Combine all document chunks
                     text = " ".join([doc.page_content for doc in documents])
 
-                    # Generate wordcloud
+                    # Removing stopwords and generating wordcloud
                     stop_words = set(stopwords.words('english'))
+                    my_stopwords = [" ","https", "cdn", "None", "1280x720", "services", "http" "www", "www.", "com", "org", "net", "int", "gov", "edu", "mil", "biz", "info", "name", "pro", "aero", "co", "STS"]
+                    stop_words.update(my_stopwords)
+                    stop_words = set(stop_words)
                     wordcloud = WordCloud(width=800,
                                         height=540,
                                         background_color='white',
@@ -153,7 +156,8 @@ def display_chat_interface(documents: Optional[List[Document]] = None):
                 with st.chat_message("assistant"):
                     if documents:
                         try:
-                            with st.spinner(":grey[I am thinking...]⏳"):
+                            think = ["I am thinking ⏳", "Shh.. magic is happening 🔮", "Thinking, wanna tea ? ☕", "To be or not to be, that's the question 🎭 or is it 🤔?", "Red pill 🔴 or Blue pill 🔵, Neo? "]
+                            with st.spinner(f":grey[{random.choice(think)}]"):
                                 # Start timer
                                 start_time = time.time()
                                 
@@ -166,7 +170,7 @@ def display_chat_interface(documents: Optional[List[Document]] = None):
                                 quirky_responses = [
                                     "Phew! That was a brain workout! 🧠💪",
                                     "I hope that tickled your neurons! 🧠✨",
-                                    "That was a real noodle scratcher! 🍜🤔",
+                                    "Give me some credit! 🤔",
                                     "I feel like a supercomputer now! 💻🚀",
                                     "That was a mental marathon! 🏃‍♂️🧠",
                                     "I think I just leveled up! 🎮🧠",
@@ -182,7 +186,7 @@ def display_chat_interface(documents: Optional[List[Document]] = None):
                                 # Add timing information to the response
                                 response_with_time = f"{quirky_response} |  󠀠 󠀠󠀠󠀠󠀠󠀠:stopwatch: _{elapsed_time:.2f} sec_"
 
-                                # response_with_time = f"{quirky_response} | 󠀠󠀠󠀠󠀠󠀠 󠀠 󠀠 󠀠 󠀠 󠀠󠀠󠀠󠀠󠀠 󠀠 󠀠 󠀠 󠀠 󠀠󠀠󠀠󠀠󠀠 󠀠 󠀠 󠀠 󠀠 󠀠󠀠󠀠󠀠󠀠 󠀠 󠀠 󠀠 󠀠 󠀠󠀠󠀠󠀠󠀠 󠀠 󠀠 󠀠 󠀠 󠀠󠀠󠀠󠀠󠀠 󠀠 󠀠 󠀠 󠀠 󠀠󠀠󠀠󠀠󠀠 󠀠 󠀠 󠀠 󠀠 󠀠󠀠󠀠󠀠󠀠 󠀠 󠀠 󠀠 󠀠 󠀠󠀠󠀠󠀠󠀠 󠀠 󠀠 󠀠 󠀠 󠀠󠀠󠀠󠀠󠀠 󠀠 󠀠 󠀠 󠀠(:stopwatch: _{elapsed_time:.2f} sec_)"
+                                # response_with_time = f"{quirky_response} | 󠀠󠀠󠀠󠀠󠀠 󠀠 󠀠 󠀠 󠀠 󠀠󠀠󠀠󠀠󠀠 󠀠 󠀠 󠀠 󠀠 󠀠󠀠󠀠󠀠󠀠 󠀠 󠀠 󠀠 󠀠 󠀠󠀠󠀠󠀠󠀠 󠀠 󠀠 󠀠 󠀠 󠀠󠀠󠀠󠀠󠀠 󠀠 󠀠 󠀠 󠀠 󠀠󠀠󠀠󠀠󠀠 󠀠 󠀠 󠀠 󠀠 󠀠󠀠󠀠󠀠󠀠 󠀠 󠀠 󠀠 󠀠 󠀠󠀠󠀠󠀠󠀠 󠀠 󠀠 󠀠 󠀠 󠀠󠀠󠀠󠀠󠀠 󠀠 󠀠 󠀠 󠀠(:stopwatch: _{elapsed_time:.2f} sec_)"
                                 
                                 # Typing effect
                                 placeholder = st.empty()
@@ -200,4 +204,4 @@ def display_chat_interface(documents: Optional[List[Document]] = None):
                             error_msg = f"Oops! My circuits got tangled: {str(e)}"
                             st.error(error_msg)
                     else:
-                        st.markdown("Please upload a document first.")
+                        st.markdown("Seriously! Come on, upload a document first.")
