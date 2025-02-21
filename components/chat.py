@@ -56,10 +56,13 @@ def display_chat_interface(documents: Optional[List[Document]] = None):
                     # Combine all document chunks
                     text = " ".join([doc.page_content for doc in documents])
 
-                    # Generate wordcloud
+                    # Removing stopwords and generating wordcloud
                     stop_words = set(stopwords.words('english'))
+                    my_stopwords = [" ","https", "cdn", "None", "1280x720", "services", "http" "www", "www.", "com", "org", "net", "int", "gov", "edu", "mil", "biz", "info", "name", "pro", "aero", "co", "STS"]
+                    stop_words.update(my_stopwords)
+                    stop_words = set(stop_words)
                     wordcloud = WordCloud(width=800,
-                                        height=610,
+                                        height=540,
                                         background_color='white',
                                         stopwords=stop_words).generate(text)
 
@@ -85,14 +88,13 @@ def display_chat_interface(documents: Optional[List[Document]] = None):
                 with tabs[3]:
                     if 'geojson_str' in st.session_state:
                         geojson_str = st.session_state.geojson_str
-                        # Now you can use geojson_str as needed
                         gdf = gpd.read_file(StringIO(geojson_str))
                         non_geometry_cols = [col for col in gdf.columns if col != 'geometry']
                         # Compute bounding box
                         bounds = gdf.total_bounds
                         minx, miny, maxx, maxy = bounds
                         # Generate Folium map
-                        m = folium.Map(location=[(miny + maxy) / 2, (minx + maxx) / 2], zoom_start=9)
+                        m = folium.Map(location=[(miny + maxy) / 2, (minx + maxx) / 2], zoom_start=8)
                         m.fit_bounds([[miny, minx], [maxy, maxx]])  # Set map bounds to match GeoDataFrame
                         folium.GeoJson(gdf).add_to(m)  # Ensure GeoJSON is in WGS 84
                         # Add GeoJSON to map with hover functionality
@@ -102,7 +104,7 @@ def display_chat_interface(documents: Optional[List[Document]] = None):
                                 'fillColor': '#ffaf00',
                                 'color': '#000000',
                                 'weight': 1,
-                                'fillOpacity': 0.6
+                                'fillOpacity': 0.5
                             },
                             tooltip=folium.GeoJsonTooltip(
                                 fields=non_geometry_cols[:5],  # Show first 5 properties on hover
@@ -124,13 +126,13 @@ def display_chat_interface(documents: Optional[List[Document]] = None):
         
         # Input for user's name
         if not st.session_state.user_name:
-            st.session_state.user_name = st.text_input("Please enter your name:")
+            st.session_state.user_name = st.text_input("Say your name, human")
 
         # Container for chat messages
         chat_container = st.container(height=545)
         
         # Input field at the bottom
-        prompt = st.chat_input(f"Hi {st.session_state.user_name}, how can I help you today?")
+        prompt = st.chat_input(f"So, it's {st.session_state.user_name} huh, feed me your documents...")
         
         # Display chat history in the container
         with chat_container:
@@ -154,18 +156,21 @@ def display_chat_interface(documents: Optional[List[Document]] = None):
                 with st.chat_message("assistant"):
                     if documents:
                         try:
-                            with st.spinner(":grey[I am thinking...]⏳"):
-                                # Add a witty comment before generating the response
-                                # st.markdown("Let me put on my thinking cap... 🎩")
-                                vector_store = get_vector_store(documents)
+                            think = ["I am thinking ⏳", "Shh.. magic is happening 🔮", "Thinking, wanna tea ? ☕", "To be or not to be, that's the question 🎭 or is it 🤔?", "Red pill 🔴 or Blue pill 🔵, Neo? "]
+                            with st.spinner(f":grey[{random.choice(think)}]"):
+                                # Start timer
+                                start_time = time.time()
+                                
+                                # Get existing vector store from session state or create new one
+                                vector_store = st.session_state.get('vector_store') or get_vector_store(documents)
                                 chain = get_llm_chain(vector_store)
                                 response = chain.invoke(prompt)
-                                
+
                                 # List of quirky responses
                                 quirky_responses = [
                                     "Phew! That was a brain workout! 🧠💪",
                                     "I hope that tickled your neurons! 🧠✨",
-                                    "That was a real noodle scratcher! 🍜🤔",
+                                    "Give me some credit! 🤔",
                                     "I feel like a supercomputer now! 💻🚀",
                                     "That was a mental marathon! 🏃‍♂️🧠",
                                     "I think I just leveled up! 🎮🧠",
@@ -175,20 +180,28 @@ def display_chat_interface(documents: Optional[List[Document]] = None):
                                 # Select a random quirky response
                                 quirky_response = f":rainbow[{response}]\n\n{random.choice(quirky_responses)}"
                                 
+                                # Calculate elapsed time
+                                elapsed_time = time.time() - start_time
+                                
+                                # Add timing information to the response
+                                response_with_time = f"{quirky_response} |  󠀠 󠀠󠀠󠀠󠀠󠀠:stopwatch: _{elapsed_time:.2f} sec_"
+
+                                # response_with_time = f"{quirky_response} | 󠀠󠀠󠀠󠀠󠀠 󠀠 󠀠 󠀠 󠀠 󠀠󠀠󠀠󠀠󠀠 󠀠 󠀠 󠀠 󠀠 󠀠󠀠󠀠󠀠󠀠 󠀠 󠀠 󠀠 󠀠 󠀠󠀠󠀠󠀠󠀠 󠀠 󠀠 󠀠 󠀠 󠀠󠀠󠀠󠀠󠀠 󠀠 󠀠 󠀠 󠀠 󠀠󠀠󠀠󠀠󠀠 󠀠 󠀠 󠀠 󠀠 󠀠󠀠󠀠󠀠󠀠 󠀠 󠀠 󠀠 󠀠 󠀠󠀠󠀠󠀠󠀠 󠀠 󠀠 󠀠 󠀠 󠀠󠀠󠀠󠀠󠀠 󠀠 󠀠 󠀠 󠀠(:stopwatch: _{elapsed_time:.2f} sec_)"
+                                
                                 # Typing effect
                                 placeholder = st.empty()
                                 typed_response = ""
-                                for char in quirky_response:
+                                for char in response_with_time:
                                     typed_response += char
                                     placeholder.markdown(typed_response, unsafe_allow_html=True)
-                                    time.sleep(0.04)  # Adjust typing speed here
+                                    time.sleep(0.001)  # Adjust typing speed here
 
                                 st.session_state.messages.append({
                                     "role": "assistant",
-                                    "content": quirky_response
+                                    "content": response_with_time
                                 })
                         except Exception as e:
                             error_msg = f"Oops! My circuits got tangled: {str(e)}"
                             st.error(error_msg)
                     else:
-                        st.markdown("Please upload a document first.")
+                        st.markdown("Seriously! Come on, upload a document first.")

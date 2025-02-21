@@ -1,10 +1,10 @@
 # ChatDocument
 
-<img src="./assets/chatoutput.gif" alt="Streamlit Web App" width="100%">
+<img src="./assets/chatRAG.gif" alt="Streamlit Web App" width="100%">
 
-Local Retrieval Augmented Generation (RAG) application that allows you to chat with your documents such as any document such as `.txt`, `.pdf`, `.md`, `.docx`, `.doc`, `.json` (including `.geojson`) using Ollama LLMs and LangChain via a Streamlit Web UI for Q&A interaction.
+Retrieval Augmented Generation (RAG) application that allows you to chat with any of your local documents in disparate formats e.g., `.txt`,`.pdf`, `.md`, `.docx`, `.doc`, `.json`,`.geojson` using Ollama LLMs and LangChain. Upload your document in the Streamlit Web UI for Q&A interaction. Have fun
 
-## 📚 RAG System Architecture
+## 📚 RAG Architecture
 
  <img src="./assets/rag.png" alt="Streamlit Web App" width="100%">
 
@@ -34,31 +34,43 @@ Local Retrieval Augmented Generation (RAG) application that allows you to chat w
 ```
 
 ## ✨ Features
-- 🔒 Complete local processing - no data leaves your machine
 - 📄 Multi document (`.txt`, `.pdf`, `.md`, `.docx`, `.doc`, `.json`) processing with intelligent chunking
 - 🧠 Multi-query retrieval for better context understanding
-- 🎯 Advanced RAG implementation using LangChain
-- 🖥️ Clean Streamlit interface
+- 🎯 Advanced RAG implementation using LangChain and Ollama
+- 🔒 Complete local data processing - no data leaves your machine
 - 📓 Jupyter notebook for experimentation
+- 🖥️ Clean Streamlit UI
 
 ## 🚀 Getting Started
 
 ### 1. **Install Ollama**
 
-- Visit [Ollama's website](https://ollama.com) to download library and install
-- Open `cmd` or `terminal` and run `ollama` to check the installation
+- Visit [Ollama.ai](https://ollama.com) to download Ollama and install
 
-- Pull initial models:
+- Open `cmd` or `terminal` and run `ollama`
+
+- Install LLM models (locally):
+
+- Start with `ollama pull llama3.2` as it's low sized (4GB) basic llm model tailored for general usecases
+
+- For vector embeddings pull the following,
 
   ```bash
-  ollama pull llama3.2  # or your preferred model
-  ollama pull nomic-embed-text
+  ollama pull mxbai-embed-large # or `nomic-embed-text`
   ```
 
-- Pull (or run) deepseek model:
+- Chat with the model in `terminal`,
 
   ```bash
-  ollama run deepseek-r1:8b
+  ollama run llama3.2   # or your preferred model
+  ```
+
+- Go to [Ollama Models](https://ollama.com/search) to search and pull other famous models as follows,
+
+  ```bash
+  ollama pull dolphin3
+  ollama pull deepseek-r1:8b
+  ollama pull mistral
   ```
 
 - Check the list of locally available ollama models:
@@ -67,46 +79,42 @@ Local Retrieval Augmented Generation (RAG) application that allows you to chat w
   ```
 ### 2. **Clone Repository**
 
-- Open `cmd` or `terminal` to clone repository and run the following commands:
+- Open `cmd` or `terminal` and navigate to your preferred directory, then run the following,
 
   ```bash
   git clone https://github.com/aghoshpro/ChatDocument.git
   ```
 
-- Create a working directory and navigate to it:
-  ```bash
-  cd ChatDocumentRAG
-  ```
+- Go to the ChatDocument folder using `cd ChatDocument`
 
 ### 3. **Set Up Local Environment**
 
-- Create a virtual environment `myvenv` and activate it:
+- Create a virtual environment `myvenv` inside the `./ChatDocument` folder and activate it:
 
   ```bash
   python -m venv myvenv
   ```
 
   ```bash
-  .\myvenv\Scripts\activate    # On Windows
-
-  # ---------------------- OR ---------------------- #
-
-  source myvenv/bin/activate  # On Linux or Mac
+  # Windows
+  .\myvenv\Scripts\activate    # OR source myvenv/bin/activate (in Linux or Mac)
   ```
 
 - Install dependencies:
   ```bash
-  pip install -r requirements.txt
+  pip install --upgrade -r requirements.txt
   ```
-- 🧪 Experiment with code if you want
+  
+- 🧪 Experiment with code in `*.ipynb`
   ```sh
   jupyter notebook
   ```
-## 🎮 Run Streamlit Web App
-
+## 🕹️ Run
 ```bash
 streamlit run main.py
 ```
+- Select `llama3.2` as the model and start chatting.
+
 - Content View
   <img src="./assets/ui.png" alt="Streamlit Web App" width="100%">
 
@@ -116,20 +124,21 @@ streamlit run main.py
 ## 🛠 Troubleshooting
 
 - Ensure Ollama is running in the background
-- GPU preferred if not CPU (will be slower)
-- ./data/sample_docs contains few local documents for you to test
-- Delete data/vector_store/ that holds embeddings in case delete file option failed to delete docs.
+- GPU preferred for good performance if not CPU (will be slower)
+- `./data/sample_docs` contains few sample documents for you to test
+- Use `pip list` or `pip freeze` to check currently installed packages
+<!-- - Delete `./data/vector_store/` that holds embeddings in case delete file option failed to delete docs. -->
 
 ## ✨Theme Configuration
 
-- Create `.streamlit/config.toml` with:
+- Edit `.streamlit/config.toml` for your color preferences
 
   ```toml
   [theme]
   primaryColor = "#FF4B4B"
-  backgroundColor = "#FFFFFF"
-  secondaryBackgroundColor = "#F0F2F6"
-  textColor = "#262730"
+  backgroundColor = "#0E1117"
+  secondaryBackgroundColor = "#262730"
+  textColor = "#FAFAFA"
   font = "sans serif"
   ```
 ## 🤝 Contributing
@@ -138,14 +147,23 @@ streamlit run main.py
 
 ## 📑 References
 
+### Docs
+
 - [LangChain](https://python.langchain.com/docs/index.html)
 - [Ollama](https://ollama.com/docs/index.html)
 - [ChromaDB](https://www.trychroma.com/)
 - [Streamlit](https://docs.streamlit.io/)
 - [Folium](https://python-visualization.github.io/folium/)
 - [Unstructured](https://docs.unstructured.io/platform/supported-file-types)
+- [ChromaDB Tutorial Step by Step Guide](https://www.datacamp.com/tutorial/chromadb-tutorial-step-by-step-guide)
+- [ChromaDB Collections](https://docs.trychroma.com/docs/collections/create-get-delete)
+
+### Blogs
+
+- [Finding the Best Open Source Embedding Model for RAG](https://medium.com/timescale/finding-the-best-open-source-embedding-model-for-rag-929d1656d331)
 - [Enhancing Retrieval Augmented Generation with ChromaDB and SQLite](https://medium.com/@dassandipan9080/enhancing-retrieval-augmented-generation-with-chromadb-and-sqlite-c499109f8082)
 - [Implementing RAG in LangChain with Chroma](https://medium.com/@callumjmac/implementing-rag-in-langchain-with-chroma-a-step-by-step-guide-16fc21815339)
 - [Build Your Own RAG and Run Them Locally](https://blog.duy.dev/build-your-own-rag-and-run-them-locally/)
-- [ChromaDB Tutorial Step by Step Guide](https://www.datacamp.com/tutorial/chromadb-tutorial-step-by-step-guide)
-- [ChromaDB Collections](https://docs.trychroma.com/docs/collections/create-get-delete)
+
+### Stack Overflow
+- [Langchain Ollama Module Difference](https://stackoverflow.com/questions/78921530/langchain-ollama-module-difference)
