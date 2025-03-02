@@ -4,14 +4,9 @@
 
 Retrieval Augmented Generation (RAG) application that allows you to chat with any of your local documents in disparate formats e.g., `.txt`,`.pdf`, `.md`, `.docx`, `.doc`, `.json`,`.geojson` using Ollama LLMs and LangChain. Upload your document in the Streamlit Web UI for Q&A interaction. Have fun
 
-## 📚 RAG Architecture
-
- <img src="./assets/rag.png" alt="Streamlit Web App" width="100%">
-
 ## 📂 Project Structure
 
 ```
-.
 ├── .streamlit/
 │   └── config.toml       # Streamlit configuration (OPTIONAL)
 ├── assets/
@@ -33,7 +28,13 @@ Retrieval Augmented Generation (RAG) application that allows you to chat with an
 └── main.py               # Application entry point
 ```
 
+## 📚 RAG Architecture
+
+<img src="./assets/RagArch.svg" alt="RAG Architecture" width="100%">
+<img align="center" src="./assets/rag.png" alt="Streamlit Web App" width="50%">
+
 ## ✨ Features
+
 - 📄 Multi document (`.txt`, `.pdf`, `.md`, `.docx`, `.doc`, `.json`) processing with intelligent chunking
 - 🧠 Multi-query retrieval for better context understanding
 - 🎯 Advanced RAG implementation using LangChain and Ollama
@@ -74,9 +75,11 @@ Retrieval Augmented Generation (RAG) application that allows you to chat with an
   ```
 
 - Check the list of locally available ollama models:
+
   ```bash
   ollama list
   ```
+
 ### 2. **Clone Repository**
 
 - Open `cmd` or `terminal` and navigate to your preferred directory, then run the following,
@@ -101,18 +104,23 @@ Retrieval Augmented Generation (RAG) application that allows you to chat with an
   ```
 
 - Install dependencies:
+
   ```bash
   pip install --upgrade -r requirements.txt
   ```
   
 - 🧪 Experiment with code in `*.ipynb`
+
   ```sh
   jupyter notebook
   ```
+
 ## 🕹️ Run
+
 ```bash
 streamlit run main.py
 ```
+
 - Select `llama3.2` as the model and start chatting.
 
 - Content View
@@ -141,7 +149,9 @@ streamlit run main.py
   textColor = "#FAFAFA"
   font = "sans serif"
   ```
+
 ## 🤝 Contributing
+
 - Open issues for bugs or suggestions
 - Submit pull requests
 
@@ -166,4 +176,5 @@ streamlit run main.py
 - [Build Your Own RAG and Run Them Locally](https://blog.duy.dev/build-your-own-rag-and-run-them-locally/)
 
 ### Stack Overflow
+
 - [Langchain Ollama Module Difference](https://stackoverflow.com/questions/78921530/langchain-ollama-module-difference)
